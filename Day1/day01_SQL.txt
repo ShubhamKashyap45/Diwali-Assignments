@@ -1,0 +1,57 @@
+1. Display top 5 highest salary earners in each dept
+
+SELECT *
+FROM employees
+WHERE dept_id = 1
+ORDER BY salary DESC
+LIMIT 5;
+
+2. Write a stored function getWorkingDays which accepts joining data and returns 
+the no of working days
+
+DELIMITER $$
+
+CREATE FUNCTION getWorkingDays(join_date DATE)
+RETURNS INT
+DETERMINISTIC
+BEGIN
+    DECLARE total_days INT;
+
+    -- Calculate total days between joining date and today
+    SET total_days = DATEDIFF(CURDATE(), join_date) + 1;
+
+    RETURN total_days;
+END $$
+
+DELIMITER ;
+
+3. Write a stored procedure which updates the salary of a given emp based on no 
+of working days. Give differential salary rise based on no of working days. 
+
+DELIMITER $$
+
+CREATE PROCEDURE updateSalaryByWorkingDays(IN emp_id INT)
+BEGIN
+    DECLARE days INT;
+    DECLARE current_salary DECIMAL(10,2);
+    DECLARE join_date DATE;
+
+    -- Get joining date and current salary
+    SELECT joining_date, salary INTO join_date, current_salary
+    FROM employees
+    WHERE id = emp_id;
+
+    -- Get number of working days
+    SET days = getWorkingDays(join_date);
+
+    -- Update salary based on working days
+    IF days > 300 THEN
+        UPDATE employees SET salary = current_salary * 1.20 WHERE id = emp_id;
+    ELSEIF days BETWEEN 200 AND 300 THEN
+        UPDATE employees SET salary = current_salary * 1.10 WHERE id = emp_id;
+    ELSE
+        UPDATE employees SET salary = current_salary * 1.05 WHERE id = emp_id;
+    END IF;
+END $$
+
+DELIMITER ;
