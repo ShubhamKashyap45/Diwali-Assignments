@@ -1,0 +1,41 @@
+CODING CHALLENGE - Missing Number (array of size n containing distinct numbers from 0..n, find missing)
+--------------------------------------------------------------------------------------
+Problem:
+You are given an array of size n that contains distinct numbers from 0 to n.
+Find the one number that is missing from the array.
+
+Explanation & Solution (Java):
+
+Approach 1 - Sum formula:
+- Compute expected sum = n*(n+1)/2  (since numbers go from 0..n)
+- Subtract actual sum of array elements
+- Missing = expected - actual
+
+Complexity: O(n) time, O(1) space
+
+Example implementation (Java):
+
+public class MissingNumber {
+    public static int missingNumber(int[] nums) {
+        int n = nums.length; // array size is n, numbers are from 0..n
+        long expected = (long)n * (n + 1) / 2;
+        long actual = 0;
+        for (int v : nums) actual += v;
+        return (int)(expected - actual);
+    }
+    public static void main(String[] args) {
+        int[] arr = {3,0,1}; // n=3 -> numbers 0..3, missing 2
+        System.out.println(missingNumber(arr)); // prints 2
+    }
+}
+
+Approach 2 - XOR (no overflow concerns):
+- XOR all indices 0..n and XOR all array values; the result is the missing number.
+
+public static int missingNumberXor(int[] nums) {
+    int n = nums.length;
+    int x = 0;
+    for (int i = 0; i <= n; i++) x ^= i;
+    for (int v : nums) x ^= v;
+    return x;
+}
