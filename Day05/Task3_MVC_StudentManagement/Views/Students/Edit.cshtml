@@ -1,0 +1,11 @@
+@model StudentManagement.Models.Student
+@{ ViewData["Title"] = "Edit"; }
+<h2>Edit Student</h2>
+<form asp-action="Edit" method="post"><input type="hidden" asp-for="Id" />
+    <div class="mb-3"><label>Name</label><input asp-for="Name" class="form-control" /><span asp-validation-for="Name" class="text-danger"></span></div>
+    <div class="mb-3"><label>BirthDate</label><input asp-for="BirthDate" type="date" class="form-control" /></div>
+    <div class="mb-3"><label>Address</label><input asp-for="Address" class="form-control" /></div>
+    <div class="mb-3"><label>School</label><input asp-for="SchoolName" class="form-control" /></div>
+    <div class="mb-3"><label>Percentage</label><input asp-for="Percentage" class="form-control" /></div>
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>
